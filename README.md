@@ -53,9 +53,8 @@ Last updated: 2025-06-03
 > - Automates the extraction and transformation of layout data into usable formats like JSON or CSV.
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/21ec5d04-1c9b-4273-ad98-7b46186de78e" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
+  <img src="https://github.com/user-attachments/assets/f9096521-65a7-42f1-a641-953ec5a5c8f2" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
 </div>
-
 
 ## Important Considerations for Production Environment
 
