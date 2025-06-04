@@ -106,6 +106,49 @@ Last updated: 2025-06-03
 
 </details>
 
+## Prerequisites
+
+- An `Azure subscription is required`. All other resources, including instructions for creating a Resource Group, are provided in this workshop.
+- `Contributor role assigned or any custom role that allows`: access to manage all resources, and the ability to deploy resources within subscription.
+- If you choose to use the Terraform approach, please ensure that:
+  - [Terraform is installed on your local machine](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli#install-terraform).
+  - [Install the Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) to work with both Terraform and Azure commands.
+
+## Where to start? 
+
+1. Please follow the [Terraform guide](./terraform-infrastructure/) to deploy the necessary Azure resources for the workshop.
+2. Next, as this method `skips the creation of each resource` manually. Proceed with the configuration from [Configure/Validate the Environment variables](#configurevalidate-the-environment-variables).
+
+> [!IMPORTANT]
+> Regarding `Networking`, this example will cover `Public access configuration`, and `system-managed identity`. However, please ensure you `review your privacy requirements and adjust network and access settings as necessary for your specific case`.
+
+## Overview 
+
+> Using Cosmos DB provides you with a flexible, scalable, and globally distributed database solution that can handle both structured and semi-structured data efficiently. <br/>
+>
+> - `Azure Blob Storage`: Store the PDF invoices. <br/>
+> - `Azure Functions`: Trigger on new PDF uploads, extract data, and process it. <br/>
+> - `Azure SQL Database or Cosmos DB`: Store the extracted data for querying and analytics. <br/> 
+
+| Resource                  | Recommendation                                                                                                      |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **Azure Blob Storage**    | Use for storing the PDF files. This keeps your file storage separate from your data storage, which is a common best practice. |
+| **Azure SQL Database**    | Use if your data is highly structured and you need complex queries and transactions.                                  |
+| **Azure Cosmos DB**       | Use if you need a globally distributed database with low latency and the ability to handle semi-structured data.      |
+
+### Function App Hosting Options 
+
+> In the context of Azure Function Apps, a `hosting option refers to the plan you choose to run your function app`. This choice affects how your function app is scaled, the resources available to each function app instance, and the support for advanced functionalities like virtual network connectivity and container support.
+
+| **Plan**                | **Scale to Zero** | **Scale Behavior**                     | **Virtual Networking** | **Dedicated Compute & Reserved Cold Start** | **Max Scale Out (Instances)** | **Example AI Use Cases**                                                                 |
+|-------------------------|-------------------|----------------------------------------|------------------------|---------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------|
+| **Flex Consumption**    | `Yes`             | `Fast event-driven`                    | `Optional`             | `Optional (Always Ready)`                   | `1000`                         | `Real-time data processing` for AI models, `high-traffic AI-powered APIs`, `event-driven AI microservices`. Use for applications needing to process large volumes of data in real-time, such as AI models for fraud detection or real-time recommendation systems. Ideal for deploying APIs that serve AI models, such as natural language processing (NLP) or computer vision services, which require rapid scaling based on demand. |
+| **Consumption**         | `Yes`             | `Event-driven`                         | `Optional`             | `No`                                        | `200`                          | `Lightweight AI APIs`, `scheduled AI tasks`, `low-traffic AI event processing`. Suitable for deploying lightweight AI services, such as sentiment analysis or simple image recognition, which do not require extensive resources. Perfect for running periodic AI tasks, like batch processing of data for machine learning model training or scheduled data analysis. |
+| **Functions Premium**   | `No`              | `Event-driven with premium options`    | `Yes`                  | `Yes`                                       | `100`                          | `Enterprise AI applications`, AI services requiring `VNet integration`, `low-latency AI APIs`. Use for mission-critical AI applications that require high availability, low latency, and integration with virtual networks, such as AI-driven customer support systems or advanced analytics platforms. Ideal for AI services that need to securely connect to on-premises resources or other Azure services within a virtual network. |
+| **App Service**         | `No`              | `Dedicated VMs`                        | `Yes`                  | `Yes`                                       | `Varies`                       | `AI-powered web applications` with integrated functions, AI applications needing `dedicated resources`. Great for web applications that incorporate AI functionalities, such as personalized content delivery, chatbots, or interactive AI features. Suitable for AI applications that require dedicated compute resources for consistent performance, such as intensive data processing or complex AI model inference. |
+| **Container Apps Env.** | `No`              | `Containerized microservices environment` | `Yes`                  | `Yes`                                       | `Varies`                       | `AI microservices architecture`, containerized AI workloads, `complex AI event-driven workflows`. Perfect for building a microservices architecture where each service can be independently scaled and managed, such as a suite of AI services for different tasks (e.g., image processing, text analysis). Ideal for deploying containerized AI workloads that need to run in a managed environment, such as machine learning model training and deployment pipelines. Suitable for orchestrating complex workflows involving multiple AI services and event-driven processes, such as automated data pipelines and real-time analytics. |
+
+
 <div align="center">
   <h3 style="color: #4CAF50;">Total Visitors</h3>
   <img src="https://profile-counter.glitch.me/brown9804/count.svg" alt="Visitor Count" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
