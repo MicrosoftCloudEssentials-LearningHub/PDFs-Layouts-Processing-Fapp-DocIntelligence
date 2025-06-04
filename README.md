@@ -117,7 +117,7 @@ Last updated: 2025-06-03
 ## Where to start? 
 
 1. Please follow the [Terraform guide](./terraform-infrastructure/) to deploy the necessary Azure resources for the workshop.
-2. Next, as this method `skips the creation of each resource` manually. Proceed with the configuration from [Configure/Validate the Environment variables](#configurevalidate-the-environment-variables).
+2. Next, as this method `skips the creation of each resource` manually. Proceed with the configuration from [Configure/Validate the Environment variables](#function-app-configurevalidate-the-environment-variables).
 
 > [!IMPORTANT]
 > Regarding `Networking`, this example will cover `Public access configuration`, and `system-managed identity`. However, please ensure you `review your privacy requirements and adjust network and access settings as necessary for your specific case`.
@@ -148,6 +148,36 @@ Last updated: 2025-06-03
 | **App Service**         | `No`              | `Dedicated VMs`                        | `Yes`                  | `Yes`                                       | `Varies`                       | `AI-powered web applications` with integrated functions, AI applications needing `dedicated resources`. Great for web applications that incorporate AI functionalities, such as personalized content delivery, chatbots, or interactive AI features. Suitable for AI applications that require dedicated compute resources for consistent performance, such as intensive data processing or complex AI model inference. |
 | **Container Apps Env.** | `No`              | `Containerized microservices environment` | `Yes`                  | `Yes`                                       | `Varies`                       | `AI microservices architecture`, containerized AI workloads, `complex AI event-driven workflows`. Perfect for building a microservices architecture where each service can be independently scaled and managed, such as a suite of AI services for different tasks (e.g., image processing, text analysis). Ideal for deploying containerized AI workloads that need to run in a managed environment, such as machine learning model training and deployment pipelines. Suitable for orchestrating complex workflows involving multiple AI services and event-driven processes, such as automated data pipelines and real-time analytics. |
 
+## Function App: Configure/Validate the Environment variables
+
+> [!NOTE]
+> This example is using system-assigned managed identity to assign RBACs (Role-based Access Control).
+
+
+- Under `Settings`, go to `Environment variables`. And `+ Add` the following variables:
+
+  - `COSMOS_DB_ENDPOINT`: Your Cosmos DB account endpoint 🡢 `Review the existence of this, if not create it`
+  - `COSMOS_DB_KEY`: Your Cosmos DB account key 🡢 `Review the existence of this, if not create it`
+  - `COSMOS_DB_CONNECTION_STRING`: Your Cosmos DB connection string 🡢 `Review the existence of this, if not create it`
+  - `invoicecontosostorage_STORAGE`: Your Storage Account connection string 🡢 `Review the existence of this, if not create it`
+  - `FORM_RECOGNIZER_ENDPOINT`: For example: `https://<your-form-recognizer-endpoint>.cognitiveservices.azure.com/` 🡢 `Review the existence of this, if not create it`
+  - `FORM_RECOGNIZER_KEY`: Your Documment Intelligence Key (Form Recognizer). 🡢
+  - `FUNCTIONS_EXTENSION_VERSION`: `~4` 🡢 `Review the existence of this, if not create it`
+  - `WEBSITE_RUN_FROM_PACKAGE`: `1` 🡢 `Review the existence of this, if not create it`
+  - `FUNCTIONS_WORKER_RUNTIME`: `python` 🡢 `Review the existence of this, if not create it`
+  - `FUNCTIONS_NODE_BLOCK_ON_ENTRY_POINT_ERROR`: `true` (This setting ensures that all entry point errors are visible in your application insights logs). 🡢 `Review the existence of this, if not create it`
+
+      <img width="550" alt="image" src="https://github.com/user-attachments/assets/31d813e7-38ba-46ff-9e4b-d091ae02706a">
+
+      <img width="550" alt="image" src="https://github.com/user-attachments/assets/45313857-b337-4231-9184-d2bb46e19267">
+
+      <img width="550" alt="image" src="https://github.com/user-attachments/assets/074d2fa5-c64d-43bd-8ed7-af6da46d86a2">
+
+      <img width="550" alt="image" src="https://github.com/user-attachments/assets/ec5d60f3-5136-489d-8796-474b7250865d">
+
+  - Click on `Apply` to save your configuration.
+    
+      <img width="550" alt="image" src="https://github.com/user-attachments/assets/437b44bb-7735-4d17-ae49-e211eca64887">
 
 <div align="center">
   <h3 style="color: #4CAF50;">Total Visitors</h3>
