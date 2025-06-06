@@ -153,7 +153,6 @@ Last updated: 2025-06-03
 > [!NOTE]
 > This example is using system-assigned managed identity to assign RBACs (Role-based Access Control).
 
-
 - Under `Settings`, go to `Environment variables`. And `+ Add` the following variables:
 
   - `COSMOS_DB_ENDPOINT`: Your Cosmos DB account endpoint 🡢 `Review the existence of this, if not create it`
@@ -178,7 +177,6 @@ Last updated: 2025-06-03
   - Click on `Apply` to save your configuration.
     
       <img width="550" alt="image" src="https://github.com/user-attachments/assets/437b44bb-7735-4d17-ae49-e211eca64887">
-
 
 ## Function App: Develop the logic
 
@@ -335,7 +333,6 @@ Last updated: 2025-06-03
 - Validate that the information was uploaded to the Cosmos DB. Under `Data Explorer`, check your `Database`.
 
    <img width="550" alt="image" src="https://github.com/user-attachments/assets/27309a6d-c654-4c76-bbc1-990a9338973c">
-
 
 <div align="center">
   <h3 style="color: #4CAF50;">Total Visitors</h3>
