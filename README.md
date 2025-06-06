@@ -314,22 +314,22 @@ Last updated: 2025-06-06
 
 - Now we need to update the function code to extract data from PDFs and store it in Cosmos DB, use this an example:
 
-   > 1. **PDF Upload**: A PDF is uploaded to the Azure Blob Storage container.
-   > 2. **Trigger Azure Function**: The upload triggers the Azure Function `BlobTriggerContosoPDFInvoicesDocIntelligence`.
-   > 3. **Initialize Clients**: Sets up connections to Document Intelligence and Cosmos DB. <br/>
-   >       - The function initializes the `DocumentAnalysisClient` to interact with Azure Document Intelligence. <br/>
-   >       - It also initializes the `CosmosClient` to interact with Cosmos DB. <br/>
-   > 4. **Read PDF from Blob Storage**: The function reads the PDF content from the Blob Storage into a byte stream.
-   > 5. **Analyze PDF**: Uses Document Intelligence to extract data. <br/>
-   >      - The function calls the `begin_analyze_document` method of the `DocumentAnalysisClient` using the prebuilt invoice model to analyze the PDF. <br/>
-   >      - It waits for the analysis to complete and retrieves the results. <br/>
-   > 6. **Extract Data**: Structures the extracted data. <br/>
-   >       - The function extracts relevant fields from the analysis result, such as customer name, email, address, company name, phone, address, and rental details. <br/>
-   >       - It structures this extracted data into a dictionary (`invoice_data`). <br/>
-   > 7. **Save Data to Cosmos DB**: Inserts the data into Cosmos DB. <br/>
-   >       - The function calls `save_invoice_data_to_cosmos` to save the structured data into Cosmos DB. <br/>
-   >       - It ensures the database and container exist, then inserts the extracted data. <br/>
-   > 8. **Logging (process and errors)**: Throughout the process, the function logs various steps and any errors encountered for debugging and monitoring purposes.
+    > 1. **PDF Upload**: A PDF file is uploaded to the Azure Blob Storage container (`pdfinvoices`).
+    > 2. **Trigger Azure Function**: The upload triggers the Azure Function `BlobTriggerContosoPDFLayoutsDocIntelligence`.
+    > 3. **Initialize Clients**: Sets up connections to Azure Document Intelligence and Cosmos DB.  
+    >    - Initializes the `DocumentAnalysisClient` using the `FORM_RECOGNIZER_ENDPOINT` and `FORM_RECOGNIZER_KEY` environment variables.  
+    >    - Initializes the `CosmosClient` using Azure Active Directory (AAD) via `DefaultAzureCredential`.
+    > 4. **Read PDF from Blob Storage**: Reads the PDF content from the blob into a byte stream.
+    > 5. **Analyze PDF**: Uses Azure Document Intelligence to analyze the layout of the PDF.  
+    >    - Calls `begin_analyze_document` with the `prebuilt-layout` model.  
+    >    - Waits for the analysis to complete and retrieves the layout result.
+    > 6. **Extract Layout Data**: Parses and structures the layout data from the analysis result.  
+    >    - Extracts lines, tables, and selection marks from each page.  
+    >    - Logs styles (e.g., handwritten content) and organizes data into a structured dictionary.
+    > 7. **Save Data to Cosmos DB**: Saves the structured layout data to Cosmos DB.  
+    >    - Ensures the database (`ContosoDBDocIntellig`) and container (`Layouts`) exist or creates them.  
+    >    - Inserts or updates the layout data using `upsert_item`.
+    > 8. **Logging (Process and Errors)**: Logs each step of the process, including success messages and detailed error handling for debugging and monitoring.
 
   - Update the function_app.py, for example [see the code used in this demo](./src/function_app.py):
 
@@ -343,14 +343,6 @@ Last updated: 2025-06-06
     | --- | --- |
     | <img width="550" alt="image" src="https://github.com/user-attachments/assets/239516e0-a4b7-4e38-8c2b-9be12ebb00de"> | <img width="550" alt="image" src="https://github.com/user-attachments/assets/91bd6bd8-ec21-4e1a-ae86-df577d37bcbb">| 
 
-     ```text
-      azure-functions
-      azure-ai-formrecognizer
-      azure-core
-      azure-cosmos==4.3.0
-      azure-identity==1.7.0
-     ```
-
   - Since this function has already been tested, you can deploy your code to the function app in your subscription. If you want to test, you can use run your function locally for testing.
     - Click on the `Azure` icon.
     - Under `workspace`, click on the `Function App` icon.
@@ -360,13 +352,13 @@ Last updated: 2025-06-06
 
     - Select your `subscription`, your `function app`, and accept the prompt to overwrite:
 
-         <img width="550" alt="image" src="https://github.com/user-attachments/assets/1882e777-6ba0-4e18-9d7b-5937204c7217">
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/b69212a5-ab79-45e2-8344-73198b231d07">
 
     - After completing, you see the status in your terminal:
 
-         <img width="550" alt="image" src="https://github.com/user-attachments/assets/aa090cfc-f5b3-4ef2-9c2d-6be4f00b83b8">
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/6214e246-5beb-4ae4-a54b-9101cac3e241">
 
-         <img width="550" alt="image" src="https://github.com/user-attachments/assets/369ecfc7-cc31-403c-a625-bb1f6caa271c">
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/78aab42c-af43-43aa-a4c0-545f4445755b">
 
 > [!IMPORTANT]
 > If you need further assistance with the code, please click [here to view all the function code](./src/).
