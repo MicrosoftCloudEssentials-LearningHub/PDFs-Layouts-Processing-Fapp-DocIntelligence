@@ -179,6 +179,164 @@ Last updated: 2025-06-03
     
       <img width="550" alt="image" src="https://github.com/user-attachments/assets/437b44bb-7735-4d17-ae49-e211eca64887">
 
+
+## Function App: Develop the logic
+
+- You need to install [VSCode](https://code.visualstudio.com/download)
+- Install python from Microsoft store:
+    
+     <img width="550" alt="image" src="https://github.com/user-attachments/assets/30f00c27-da0d-400f-9b98-817fd3e03b1c">
+
+- Open VSCode, and install some extensions: `python`, and `Azure Tools`.
+
+     <img width="550" alt="image" src="https://github.com/user-attachments/assets/715449d3-1a36-4764-9b07-99421fb1c834">
+
+     <img width="550" alt="image" src="https://github.com/user-attachments/assets/854aa665-dc2f-4cbf-bae2-2dc0a8ef6e46">
+
+- Click on the `Azure` icon, and `sign in` into your account. Allow the extension `Azure Resources` to sign in using Microsoft, it will open a browser window. After doing so, you will be able to see your subscription and resources.
+
+    <img width="550" alt="image" src="https://github.com/user-attachments/assets/4824ca1c-4959-4242-95af-ad7273c5530d">
+
+- Under Workspace, click on `Create Function Project`, and choose a path in your local computer to develop your function.
+
+    <img width="550" alt="image" src="https://github.com/user-attachments/assets/2c42d19e-be8b-48ef-a7e4-8a39989cea5a">
+
+- Choose the language, in this case is `python`:
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/2fb19a1e-bb2d-47e5-a56e-8dc8a708647a">
+
+- Select the model version, for this example let's use `v2`:
+  
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/fd46ee93-d788-463d-8b28-dbf2487e9a7f">
+
+- For the python interpreter, let's use the one installed via `Microsoft Store`:
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/3605c959-fc59-461f-9e8d-01a6a92004a8">
+
+- Choose a template (e.g., **Blob trigger**) and configure it to trigger on new PDF uploads in your Blob container.
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/0a4ed541-a693-485c-b6ca-7d5fb55a61d2">
+
+- Provide a function name, like `BlobTriggerContosoPDFInvoicesDocIntelligence`:
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/263cef5c-4460-46cb-8899-fb609b191d81">
+
+- Next, it will prompt you for the path of the blob container where you expect the function to be triggered after a file is uploaded. In this case is `pdfinvoices` as was previously created.
+
+  <img width="550" alt="image" src="https://github.com/user-attachments/assets/7005dc44-ffe2-442b-8373-554b229b3042">
+
+- Click on `Create new local app settings`, and then choose your subscription.
+
+  <img width="550" alt="image" src="https://github.com/user-attachments/assets/07c211d6-eda0-442b-b428-cdaed2bf12ac">
+
+- Choose `Azure Storage Account for remote storage`, and select one. I'll be using the `invoicecontosostorage`. 
+
+  <img width="550" alt="image" src="https://github.com/user-attachments/assets/3b5865fc-3e84-4582-8f06-cb5675d393f0">
+
+- Then click on `Open in the current window`. You will see something like this:
+
+  <img width="550" alt="image" src="https://github.com/user-attachments/assets/f30e8e10-0c37-4efc-8158-c83faf22a7d8">
+
+- Now we need to update the function code to extract data from PDFs and store it in Cosmos DB, use this an example:
+
+   > 1. **PDF Upload**: A PDF is uploaded to the Azure Blob Storage container.
+   > 2. **Trigger Azure Function**: The upload triggers the Azure Function `BlobTriggerContosoPDFInvoicesDocIntelligence`.
+   > 3. **Initialize Clients**: Sets up connections to Document Intelligence and Cosmos DB. <br/>
+   >       - The function initializes the `DocumentAnalysisClient` to interact with Azure Document Intelligence. <br/>
+   >       - It also initializes the `CosmosClient` to interact with Cosmos DB. <br/>
+   > 4. **Read PDF from Blob Storage**: The function reads the PDF content from the Blob Storage into a byte stream.
+   > 5. **Analyze PDF**: Uses Document Intelligence to extract data. <br/>
+   >      - The function calls the `begin_analyze_document` method of the `DocumentAnalysisClient` using the prebuilt invoice model to analyze the PDF. <br/>
+   >      - It waits for the analysis to complete and retrieves the results. <br/>
+   > 6. **Extract Data**: Structures the extracted data. <br/>
+   >       - The function extracts relevant fields from the analysis result, such as customer name, email, address, company name, phone, address, and rental details. <br/>
+   >       - It structures this extracted data into a dictionary (`invoice_data`). <br/>
+   > 7. **Save Data to Cosmos DB**: Inserts the data into Cosmos DB. <br/>
+   >       - The function calls `save_invoice_data_to_cosmos` to save the structured data into Cosmos DB. <br/>
+   >       - It ensures the database and container exist, then inserts the extracted data. <br/>
+   > 8. **Logging (process and errors)**: Throughout the process, the function logs various steps and any errors encountered for debugging and monitoring purposes.
+
+  - Update the function_app.py, for example [see the code used in this demo](./src/function_app.py):
+
+      | Template Blob Trigger | Function Code updated |
+      | --- | --- |
+      |   <img width="550" alt="image" src="https://github.com/user-attachments/assets/07a7b285-eed2-4b42-bb1f-e41e8eafd273"> |  <img width="550" alt="image" src="https://github.com/user-attachments/assets/d364591b-817e-4f36-8c50-7de187c32a1e">|
+
+  - Now, let's update the `requirements.txt`, [see the code used in this demo](./src/requirements.txt):
+
+    | Template `requirements.txt` | Updated `requirements.txt` |
+    | --- | --- |
+    | <img width="550" alt="image" src="https://github.com/user-attachments/assets/239516e0-a4b7-4e38-8c2b-9be12ebb00de"> | <img width="550" alt="image" src="https://github.com/user-attachments/assets/91bd6bd8-ec21-4e1a-ae86-df577d37bcbb">| 
+
+     ```text
+      azure-functions
+      azure-ai-formrecognizer
+      azure-core
+      azure-cosmos==4.3.0
+      azure-identity==1.7.0
+     ```
+
+  - Since this function has already been tested, you can deploy your code to the function app in your subscription. If you want to test, you can use run your function locally for testing.
+    - Click on the `Azure` icon.
+    - Under `workspace`, click on the `Function App` icon.
+    - Click on `Deploy to Azure`.
+
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/12405c04-fa43-4f09-817d-f6879fbff035">
+
+    - Select your `subscription`, your `function app`, and accept the prompt to overwrite:
+
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/1882e777-6ba0-4e18-9d7b-5937204c7217">
+
+    - After completing, you see the status in your terminal:
+
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/aa090cfc-f5b3-4ef2-9c2d-6be4f00b83b8">
+
+         <img width="550" alt="image" src="https://github.com/user-attachments/assets/369ecfc7-cc31-403c-a625-bb1f6caa271c">
+
+> [!IMPORTANT]
+> If you need further assistance with the code, please click [here to view all the function code](./src/).
+
+> [!NOTE]
+> Please ensure that all specified roles are assigned to the Function App. The provided example used `System assigned` for the Function App to facilitate the role assignment.
+
+## Test the solution
+
+> [!IMPORTANT]
+> Please ensure that the user/system admin responsible for uploading the PDFs to the blob container has the necessary permissions. The error below illustrates what might occur if these roles are missing. <br/> 
+> <img width="550" alt="image" src="https://github.com/user-attachments/assets/d827775a-d419-467e-9b2d-35cb05bc0f8a"> <br/>
+> In that case, go to `Access Control (IAM)`, click on `+ Add`, and `Add role assignment`: <br/>
+> <img width="550" alt="image" src="https://github.com/user-attachments/assets/aa4deff1-b6e1-49ec-9395-831ce2f982f5"> <br/>
+> Search for `Storage Blob Data Contributor`, click `Next`. <br/>
+> <img width="550" alt="image" src="https://github.com/user-attachments/assets/1fd40ef8-53f7-42df-a263-5bc3c80e61ba"> <br/>
+> Then, click on `select members` and search for your user/systen admin. Finally click on `Review + assign`.
+
+> Upload sample PDF invoices to the Blob container and verify that data is correctly ingested and stored in Cosmos DB.
+
+- Click on `Upload`, then select `Browse for files` and choose your PDF invoices to be stored in the blob container, which will trigger the function app to parse them.
+
+   <img width="950" alt="image" src="https://github.com/user-attachments/assets/a8456461-400b-4c68-b3d3-ac0b1630374d">
+
+- Check the logs, and traces from your function with `Application Insights`:
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/d499580a-76cb-4b4f-bb36-fd60c563a91c">
+
+- Under `Investigate`, click on `Performance`. Filter by time range, and `drill into the samples`. Sort the results by date (if you have many, like in my case) and click on the last one.
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/e266131c-e46f-4848-96ed-db2c04c5c18f">
+
+- Click on `View all`:
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/19356900-00c8-43ca-b888-fe493b25f258">
+
+- Check all the logs, and traces generated. Also review the information parsed:
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/8f4631cc-162e-4c3b-913d-d146ea4e36b3">
+
+- Validate that the information was uploaded to the Cosmos DB. Under `Data Explorer`, check your `Database`.
+
+   <img width="550" alt="image" src="https://github.com/user-attachments/assets/27309a6d-c654-4c76-bbc1-990a9338973c">
+
+
 <div align="center">
   <h3 style="color: #4CAF50;">Total Visitors</h3>
   <img src="https://profile-counter.glitch.me/brown9804/count.svg" alt="Visitor Count" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
