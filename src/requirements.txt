@@ -3,3 +3,7 @@
 # Manually managing azure-functions-worker may cause unexpected issues
 
 azure-functions
+azure-ai-formrecognizer
+azure-core
+azure-cosmos==4.3.0
+azure-identity==1.7.0
