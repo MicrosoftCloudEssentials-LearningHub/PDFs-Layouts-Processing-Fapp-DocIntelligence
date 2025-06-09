@@ -46,7 +46,7 @@ Last updated: 2025-06-06
 - [Prerequisites](#prerequisites)
 - [Where to start?](#where-to-start)
 - [Overview](#overview)
-    - [Function App Hosting Options](#function-app-hosting-options)
+- [Function App Hosting Options](#function-app-hosting-options)
 - [Function App: Configure/Validate the Environment variables](#function-app-configurevalidate-the-environment-variables)
 - [Function App: Develop the logic](#function-app-develop-the-logic)
 - [Test the solution](#test-the-solution)
@@ -166,7 +166,7 @@ Last updated: 2025-06-06
 | **Azure SQL Database**    | Use if your data is highly structured and you need complex queries and transactions.                                  |
 | **Azure Cosmos DB**       | Use if you need a globally distributed database with low latency and the ability to handle semi-structured data.      |
 
-### Function App Hosting Options 
+## Function App Hosting Options 
 
 > In the context of Azure Function Apps, a `hosting option refers to the plan you choose to run your function app`. This choice affects how your function app is scaled, the resources available to each function app instance, and the support for advanced functionalities like virtual network connectivity and container support.
 
