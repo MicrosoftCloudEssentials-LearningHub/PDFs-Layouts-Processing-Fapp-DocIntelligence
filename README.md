@@ -56,6 +56,21 @@ Last updated: 2025-06-06
   <img src="https://github.com/user-attachments/assets/f9096521-65a7-42f1-a641-953ec5a5c8f2" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
 </div>
 
+> [!NOTE]
+> Azure Event Grid System Topics are free to create and manage, a System Topic is automatically created and managed by Azure for certain Azure services that emit events. It represents a source of events from an Azure resource (like a Storage Account, Key Vault, or Azure Maps). `You don't need to create or manage the topic yourself, Azure does it for you when you enable event publishing on a supported resource.` <br/>
+> - Emits predefined event types (e.g., Microsoft.Storage.BlobCreated, Microsoft.Resources.ResourceWriteSuccess). <br/>
+> - You can attach event handlers (like Azure Functions, Logic Apps, Webhooks) to respond to these events. <br/>
+> - Works seamlessly with serverless architectures for real-time automation. <br/>
+> For example:
+> Suppose you have a Storage Account and want to trigger a function every time a new blob is uploaded: <br/>
+> - Azure automatically creates a System Topic for the Storage Account.
+> - You subscribe to the BlobCreated event.
+> - When a blob is uploaded, Event Grid routes the event to your Azure Function.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4371c3f7-9a77-4e41-8f80-714333c1a1c3" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
+</div>
+
 ## Important Considerations for Production Environment
 
 <details>
