@@ -39,6 +39,21 @@ Last updated: 2025-06-06
 
 </details>
 
+<details>
+<summary><b>Table of Content</b> (Click to expand)</summary>
+  
+- [Important Considerations for Production Environment](#important-considerations-for-production-environment)
+- [Prerequisites](#prerequisites)
+- [Where to start?](#where-to-start)
+- [Overview](#overview)
+    - [Function App Hosting Options](#function-app-hosting-options)
+- [Function App: Configure/Validate the Environment variables](#function-app-configurevalidate-the-environment-variables)
+- [Function App: Develop the logic](#function-app-develop-the-logic)
+- [Test the solution](#test-the-solution)
+
+</details>
+
+
 > How to extract layout elements from PDFs stored in an Azure Storage Account, process them using Azure Document Intelligence, and store the results in Cosmos DB for further analysis.
 >
 > 1. Upload your PDFs to an Azure Blob Storage container. <br/>
