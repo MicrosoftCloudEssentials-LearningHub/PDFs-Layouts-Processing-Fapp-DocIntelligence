@@ -311,12 +311,13 @@ resource "azurerm_cognitive_account" "form_recognizer" {
 # Workaround: Use null_resource with local-exec integrating the CLI command into 
 # Terraform using a null_resource as follow:
 locals {
-  cosmosdb_role_assignment_id = uuid()
+  cosmosdb_role_assignment_id_function = uuid()
+  cosmosdb_role_assignment_id_user     = uuid()
 }
 
 resource "null_resource" "cosmosdb_sql_role_assignment" {
   provisioner "local-exec" {
-    command = "az cosmosdb sql role assignment create --resource-group ${azurerm_resource_group.rg.name} --account-name ${azurerm_cosmosdb_account.cosmosdb.name} --role-definition-id /subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.rg.name}/providers/Microsoft.DocumentDB/databaseAccounts/${azurerm_cosmosdb_account.cosmosdb.name}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002 --principal-id ${azurerm_linux_function_app.function_app.identity[0].principal_id} --scope ${azurerm_cosmosdb_account.cosmosdb.id} --role-assignment-id ${local.cosmosdb_role_assignment_id}"
+    command = "az cosmosdb sql role assignment create --resource-group ${azurerm_resource_group.rg.name} --account-name ${azurerm_cosmosdb_account.cosmosdb.name} --role-definition-id /subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.rg.name}/providers/Microsoft.DocumentDB/databaseAccounts/${azurerm_cosmosdb_account.cosmosdb.name}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002 --principal-id ${azurerm_linux_function_app.function_app.identity[0].principal_id} --scope ${azurerm_cosmosdb_account.cosmosdb.id} --role-assignment-id ${local.cosmosdb_role_assignment_id_function}"
   }
 
   depends_on = [
@@ -328,7 +329,7 @@ resource "null_resource" "cosmosdb_sql_role_assignment" {
 # Assign the Cosmos DB role to the user running the deployment 
 resource "null_resource" "cosmosdb_sql_role_assignment_user" {
   provisioner "local-exec" {
-    command = "az cosmosdb sql role assignment create --resource-group ${azurerm_resource_group.rg.name} --account-name ${azurerm_cosmosdb_account.cosmosdb.name} --role-definition-id /subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.rg.name}/providers/Microsoft.DocumentDB/databaseAccounts/${azurerm_cosmosdb_account.cosmosdb.name}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002 --principal-id ${data.azurerm_client_config.current.object_id} --scope ${azurerm_cosmosdb_account.cosmosdb.id} --role-assignment-id ${local.cosmosdb_role_assignment_id}"
+    command = "az cosmosdb sql role assignment create --resource-group ${azurerm_resource_group.rg.name} --account-name ${azurerm_cosmosdb_account.cosmosdb.name} --role-definition-id /subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.rg.name}/providers/Microsoft.DocumentDB/databaseAccounts/${azurerm_cosmosdb_account.cosmosdb.name}/sqlRoleDefinitions/00000000-0000-0000-0000-000000000002 --principal-id ${data.azurerm_client_config.current.object_id} --scope ${azurerm_cosmosdb_account.cosmosdb.id} --role-assignment-id ${local.cosmosdb_role_assignment_id_user}"
   }
 
   depends_on = [
