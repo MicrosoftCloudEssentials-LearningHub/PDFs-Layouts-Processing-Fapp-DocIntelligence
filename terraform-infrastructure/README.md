@@ -1,13 +1,5 @@
 # Azure Infrastructure Terraform Template
 
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2025-07-21
-
-----------
-
 <div align="center">
   <img src="https://github.com/user-attachments/assets/f720723f-451f-4e55-a433-9775124f41f2" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
 </div>
@@ -47,8 +39,8 @@ graph TD;
     C -->|Delete Resource if needed| F[terraform destroy]
 ```
 
-> [!IMPORTANT]
-> Please modify `terraform.tfvars` with your information, then run the following flow. If you need more visual guidance, please check the video that illustrates the provisioning steps. 
+!!! warning "Review deployment values"
+  Update `terraform.tfvars` with environment-specific values before running the following commands. Review the plan before applying changes.
 
 1. **Login to Azure**: This command logs you into your Azure account. It opens a browser window where you can enter your Azure credentials. Once logged in, you can manage your Azure resources from the command line.
 
@@ -105,10 +97,3 @@ graph TD;
         > At the end, you will see a message in green if everything was executed successfully: 
 
         <img width="550" alt="image" src="https://github.com/user-attachments/assets/f2089d03-3a3d-431d-b462-8148ef519104">
-
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1286-limegreen" alt="Total views">
-  <p>Refresh Date: 2025-10-29</p>
-</div>
-<!-- END BADGE -->
